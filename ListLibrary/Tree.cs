@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ListLibrary
+{
+    public class Tree<T>
+    {
+        protected TreeNode<T> root;
+
+        public Tree()
+        {
+            root = null;
+        }
+
+        public virtual void Insert(T value) { }
+        public virtual TreeNode<T> InsertSub(TreeNode<T> root, TreeNode<T> new_node) { return root; }
+    }
+}
