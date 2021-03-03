@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListLibrary
 {
-    public class BinaryTree<T>: Tree<T>
+    public class BinaryTree<T>: Tree<T> where T : IComparable
     {
         public BinaryTree()
         {
@@ -32,7 +32,7 @@ namespace ListLibrary
             {
                 root = new_node;
             }
-            else if (Convert.ToInt32(new_node.value) > Convert.ToInt32(root.value))
+            else if (root.value.CompareTo(new_node.value)==1)
             {
                 root.right = InsertSub(root.right, new_node);
             }

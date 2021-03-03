@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListLibrary
 {
-    public class TreeNode<T>: Node<T>
+    public class TreeNode<T>: Node<T> where T : IComparable
     {
         public TreeNode<T> right;
         public TreeNode<T> left;

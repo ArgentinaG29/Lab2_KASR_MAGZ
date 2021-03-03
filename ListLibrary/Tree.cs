@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListLibrary
 {
-    public class Tree<T>
+    public class Tree<T> where T : IComparable
     {
         protected TreeNode<T> root;
 
