@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ListLibrary
 {
-    public class GenericList<T>: IEnumerable<T>
+    public class GenericList<T>: IEnumerable<T> 
     {
         protected Node<T> start;
         protected Node<T> end;

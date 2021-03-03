@@ -2,7 +2,7 @@
 
 namespace ListLibrary
 {
-    public class Node<T> where T : IComparable
+    public class Node<T> 
     {
         public T value;
         public Node<T> next;

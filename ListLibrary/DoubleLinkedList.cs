@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListLibrary
 {
-    public class DoubleLinkedList<T>: GenericList<T>
+    public class DoubleLinkedList<T>: GenericList<T> 
     {
         public DoubleLinkedList()
         {
