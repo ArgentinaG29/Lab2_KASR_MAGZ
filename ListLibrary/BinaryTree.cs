@@ -32,7 +32,7 @@ namespace ListLibrary
             {
                 root = new_node;
             }
-            else if (root.value.CompareTo(new_node.value)==1)
+            else if (new_node.value.CompareTo(root.value) == 1)
             {
                 root.right = InsertSub(root.right, new_node);
             }
