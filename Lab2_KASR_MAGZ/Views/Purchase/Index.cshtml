@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Customer</h1>
+ <section>
+     <form action="Purchase/ClientInformation" method="post">
+         <label>Nombre del cliente</label>
+         <input type="type" name="Name" value="" />
+         <p>
+         </p>
+         <label>NIT del cliente</label>
+         <input type="type" name="NIT" value="" />
+         <p>
+         </p>
+         <label>Dirección del cliente</label>
+         <input type="type" name="Direct" value="" />
+         <button>Enviar</button>
+     </form>
+ </section>
+
+ <form asp-controller="Purchase" asp-action="Index">
+     <input type="submit" value="Add Products" />
+ </form>
+ <form asp-controller="Health" asp-action="Index">
+     <input type="submit" value="Back" />
+ </form>
+
