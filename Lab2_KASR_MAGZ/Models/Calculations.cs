@@ -14,12 +14,23 @@ namespace Lab2_KASR_MAGZ.Models
             return NewStock;
         }
 
-        public static int NTotal(IEnumerable<Medicine> NameList)
+        public static double NTotal(IEnumerable<Medicine> NameList)
         {
-            int Total = 0;
+            double Total = 0;
             for(int i =0; i < NameList.Count(); i++)
             {
-                int part1 = Convert.ToInt32(NameList.ElementAt(i).Price) * Convert.ToInt32(NameList.ElementAt(i).Stock);
+                double part1 = Convert.ToDouble(NameList.ElementAt(i).Price) * Convert.ToInt32(NameList.ElementAt(i).Stock);
+                Total += part1;
+            }
+            return Total;
+        }
+
+        public static int ProductTotal(IEnumerable<Medicine> NameList)
+        {
+            int Total = 0;
+            for (int i = 0; i < NameList.Count(); i++)
+            {
+                int part1 = Convert.ToInt32(Convert.ToInt32(NameList.ElementAt(i).Stock));
                 Total += part1;
             }
             return Total;

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Lab2_KASR_MAGZ.Models.FileDownload>
+
+@{
+    ViewData["Title"] = "ListPost";
+}
+
+<h1>Post-Order</h1>
+<form asp-controller="Health" asp-action="DownloadPost">
+    <input type="submit" value="Download Post-Order" />
+</form>
+
+<p>
+</p>
+<form asp-controller="Health" asp-action="Index">
+    <input type="submit" value="Back to Menu" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NameMedicineFile)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameMedicineFile)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

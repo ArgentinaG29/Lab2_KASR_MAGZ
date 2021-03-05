@@ -9,7 +9,6 @@ namespace ListLibrary
         public BinaryTree()
         {
             root = null;
-            PreOrdenS = "";
         }
 
         public override TreeNode<T> ReturnRoot()
@@ -38,7 +37,7 @@ namespace ListLibrary
             {
                 root = new_node;
             }
-            else if (root.value.CompareTo(new_node.value)==1)
+            else if (new_node.value.CompareTo(root.value) == 1)
             {
                 root.right = InsertSub(root.right, new_node);
             }
@@ -71,12 +70,38 @@ namespace ListLibrary
 
         public override void PostOrder(TreeNode<T> root)
         {
-            if(root != null)
+            if (root != null)
             {
                 PostOrder(root.left);
                 PostOrder(root.right);
                 bool HelpAux = root.value.Equals(root.value);
             }
         }
+
+        public override TreeNode<T> Search(T searched, TreeNode<T> root)
+        {
+            int comparison = 0;
+            if (root != null)
+            {
+                comparison = searched.CompareTo(root.value);
+            }
+            
+            if (root == null || comparison == 0)
+            {
+                return root;
+            }
+            else
+            {
+                if (comparison == 1)
+                {
+                    return Search(searched, root.right);
+                }
+                else
+                {
+                    return Search(searched, root.left);
+                }
+            }
+        }
+
     }
 }

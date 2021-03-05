@@ -21,21 +21,49 @@ namespace Lab2_KASR_MAGZ.Models.Data
         public int CompareTo(object obj)
         {
             var comparer = ((ClassMedicine)obj).Name;
-            if (GetNumber(comparer.Substring(0, 1).ToUpper()) < GetNumber(Name.Substring(0, 1).ToUpper()))
+            bool flag = false;
+            int i = 0;
+            int result = 0;
+
+            if(comparer != Name)
             {
-                return -1;
-            }
-            else
-            {
-                if (GetNumber(comparer.Substring(0, 1).ToUpper()) > GetNumber(Name.Substring(0, 1).ToUpper()))
+                while(flag == false && i < comparer.Length && i < Name.Length)
                 {
-                    return 1;
+                    if (GetNumber(comparer.Substring(i, 1).ToUpper()) < GetNumber(Name.Substring(i, 1).ToUpper()))
+                    {
+                        result = 1;
+                        flag = true;
+                    }
+                    else
+                    {
+                        if (GetNumber(comparer.Substring(i, 1).ToUpper()) > GetNumber(Name.Substring(i, 1).ToUpper()))
+                        {
+                            result = -1;
+                            flag = true;
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
                 }
-                else
+
+                if (flag == false)
                 {
-                    return 0;
+                    if (i == Name.Length)
+                    {
+                        result = -1;
+                    }
+                    else
+                    {
+                        if (i == comparer.Length)
+                        {
+                            result = 1;
+                        }
+                    }
                 }
             }
+            return result;
         }
 
         public void InformationTree(object obj)

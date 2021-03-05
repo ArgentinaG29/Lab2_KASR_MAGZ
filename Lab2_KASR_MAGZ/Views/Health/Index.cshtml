@@ -5,7 +5,6 @@
 }
 
 <h1>Index</h1>
-
 <b><p>IMPORT FILE</p></b>
 <form asp-controller="Health" asp-action="Index" method="post" enctype="multipart/form-data">
     <input type="file" name="postedFile" value="" />
@@ -30,23 +29,22 @@
 <p>
 </p>
 <p><b>SHOW PreOrder/InOrder/PostOrder</b></p>
-<form asp-controller="Health" asp-action="DownloadPre">
+<form asp-controller="Health" asp-action="ListPre">
     <input type="submit" value="Pre-Order" />
 </form>
 <p>
 
 </p>
-<form asp-controller="Health" asp-action="DownloadIn">
+<form asp-controller="Health" asp-action="ListIn">
     <input type="submit" value="In-Order" />
 </form>
 <p>
 
 </p>
-<form asp-controller="Health" asp-action="DownloadPost">
+<form asp-controller="Health" asp-action="ListPost">
     <input type="submit" value="Post-Order" />
 </form>
-
-@*<table class="table">
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -100,4 +98,4 @@
             </tr>
         }
     </tbody>
-</table>*@
+</table>

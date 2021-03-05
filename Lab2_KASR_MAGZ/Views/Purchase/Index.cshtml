@@ -1,29 +1,106 @@
-﻿
+﻿@model IEnumerable<Lab2_KASR_MAGZ.Models.Medicine>
+
 @{
     ViewData["Title"] = "Index";
+
 }
 
 <h1>Customer</h1>
- <section>
-     <form action="Purchase/ClientInformation" method="post">
-         <label>Nombre del cliente</label>
-         <input type="type" name="Name" value="" />
-         <p>
-         </p>
-         <label>NIT del cliente</label>
-         <input type="type" name="NIT" value="" />
-         <p>
-         </p>
-         <label>Dirección del cliente</label>
-         <input type="type" name="Direct" value="" />
-         <button>Enviar</button>
-     </form>
- </section>
+<label>Only enter the data once</label>
+<section>
+    <form action="Purchase/ClientInformation" method="post">
+        <label>customer name </label>
+        <input type="type" name="Name" value="" />
+        <p>
+        </p>
+        <label>Customer Nit</label>
+        <input type="type" name="NIT" value="" />
+        <p>
+        </p>
+        <label>Customer address</label>
+        <input type="type" name="Direct" value="" />
+        <button>Send Customer</button>
+    </form>
+</section>
+<p>
+</p>
+<section>
+    <form action="Purchase/SearchMedicine" method="post">
+        <label>Enter the data of product</label>
+        <label>Producto a buscar</label>
+        <input type="type" name="NameMS" value="" />
+        <p>
+        </p>
+        <label>Cantidad de producto</label>
+        <input type="type" name="quantity" value="" />
+        <p>
+        </p>
+        <button>Add Products</button>
+    </form>
+</section>
 
- <form asp-controller="Purchase" asp-action="Index">
-     <input type="submit" value="Add Products" />
- </form>
- <form asp-controller="Health" asp-action="Index">
-     <input type="submit" value="Back" />
- </form>
+<p>
 
+</p>
+
+<form asp-controller="Purchase" asp-action="DownloadBill">
+    <input type="submit" value="Download Bill" />
+</form>
+<form asp-controller="Health" asp-action="Index">
+    <input type="submit" value="Finalize" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionHouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductionHouse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

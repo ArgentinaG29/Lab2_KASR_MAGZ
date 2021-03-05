@@ -16,11 +16,12 @@ namespace Lab2_KASR_MAGZ.Controllers
     public class HealthController : Controller
     {
         private IHostingEnvironment Environment;
-        public string routeD;
 
         public HealthController(IHostingEnvironment _environment)
         {
             Environment = _environment;
+            Singleton.Instance.CustomerListInformation.Clear();
+            Singleton.Instance.ProductsList.Clear();
         }
 
         // GET: HealthController
@@ -230,7 +231,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                 }
             }
 
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: HealthController/Details/5
@@ -306,51 +307,76 @@ namespace Lab2_KASR_MAGZ.Controllers
 
         public ActionResult NewRessuply()
         {
-            for(int i =0; i < Singleton.Instance.MedicineList.Count(); i++)
+            if(Singleton.Instance.MedicineList.Count() != 0)
             {
-                if(Singleton.Instance.MedicineList.ElementAt(i).Stock == 0)
+                for (int i = 0; i < Singleton.Instance.MedicineList.Count(); i++)
                 {
-                    int IdNumer = Singleton.Instance.MedicineList.ElementAt(i).Id;
-
-                    int NewStockMedicine = Calculations.resupply();
-                    var NewMedicineStock = new Models.Medicine
+                    if (Singleton.Instance.MedicineList.ElementAt(i).Stock == 0)
                     {
-                        Id = Singleton.Instance.MedicineList.ElementAt(i).Id,
-                        Name = Singleton.Instance.MedicineList.ElementAt(i).Name,
-                        Description = Singleton.Instance.MedicineList.ElementAt(i).Description,
-                        ProductionHouse = Singleton.Instance.MedicineList.ElementAt(i).ProductionHouse,
-                        Price = Singleton.Instance.MedicineList.ElementAt(i).Price,
-                        Stock = NewStockMedicine
-                    };
+                        int IdNumer = Singleton.Instance.MedicineList.ElementAt(i).Id;
 
-                    var NewIndexStock = new Models.Data.ClassMedicine
-                    {
-                        Position=IdNumer,
-                        Name = Singleton.Instance.MedicineList.ElementAt(i).Name
-                    };
+                        int NewStockMedicine = Calculations.resupply();
+                        var NewMedicineStock = new Models.Medicine
+                        {
+                            Id = Singleton.Instance.MedicineList.ElementAt(i).Id,
+                            Name = Singleton.Instance.MedicineList.ElementAt(i).Name,
+                            Description = Singleton.Instance.MedicineList.ElementAt(i).Description,
+                            ProductionHouse = Singleton.Instance.MedicineList.ElementAt(i).ProductionHouse,
+                            Price = Singleton.Instance.MedicineList.ElementAt(i).Price,
+                            Stock = NewStockMedicine
+                        };
 
-                    if(i==0)
-                    {
-                        Singleton.Instance.MedicineList.ExtractAtStart();
-                        Singleton.Instance.MedicineList.InsertAtStart(NewMedicineStock);
+                        var NewIndexStock = new Models.Data.ClassMedicine
+                        {
+                            Position = IdNumer,
+                            Name = Singleton.Instance.MedicineList.ElementAt(i).Name
+                        };
+
+                        if (i == 0)
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtStart();
+                            Singleton.Instance.MedicineList.InsertAtStart(NewMedicineStock);
+                        }
+                        else if (i == Singleton.Instance.MedicineList.Count() - 1)
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtEnd();
+                            Singleton.Instance.MedicineList.InsertAtEnd(NewMedicineStock);
+                        }
+                        else
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtPosition(i);
+                            Singleton.Instance.MedicineList.InsertAtPosition(NewMedicineStock, i);
+                        }
+
+                        Singleton.Instance.IndexList.Insert(NewIndexStock);
+
                     }
-                    else if(i == Singleton.Instance.MedicineList.Count() - 1)
-                    {
-                        Singleton.Instance.MedicineList.ExtractAtEnd();
-                        Singleton.Instance.MedicineList.InsertAtEnd(NewMedicineStock);
-                    }
-                    else
-                    {
-                        Singleton.Instance.MedicineList.ExtractAtPosition(i);
-                        Singleton.Instance.MedicineList.InsertAtPosition(NewMedicineStock, i);
-                    }
-
-                    Singleton.Instance.IndexList.Insert(NewIndexStock);
-
                 }
             }
+            
             return RedirectToAction(nameof(Index));
         }
+        public ActionResult ListPre()
+        {
+            Singleton.Instance.InformationFile.Clear();
+            Singleton.Instance.IndexList.PreOrder(Singleton.Instance.IndexList.ReturnRoot());
+            return View(Singleton.Instance.InformationFile);
+        }
+
+        public ActionResult ListIn()
+        {
+            Singleton.Instance.InformationFile.Clear();
+            Singleton.Instance.IndexList.InOrder(Singleton.Instance.IndexList.ReturnRoot());
+            return View(Singleton.Instance.InformationFile);
+        }
+
+        public ActionResult ListPost()
+        {
+            Singleton.Instance.InformationFile.Clear();
+            Singleton.Instance.IndexList.PostOrder(Singleton.Instance.IndexList.ReturnRoot());
+            return View(Singleton.Instance.InformationFile);
+        }
+
         public ActionResult DownloadPre()
         {
             string text = "";
