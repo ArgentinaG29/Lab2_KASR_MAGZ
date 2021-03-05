@@ -10,10 +10,16 @@ namespace Lab2_KASR_MAGZ.Models.Data
     {
         private readonly static Singleton _instance = new Singleton();
         public GenericList<Medicine> MedicineList;
+        public List<Customer> CustomerListInformation;
+        public Tree<ClassMedicine> IndexList;
+        public List<FileDownload> InformationFile;
 
         private Singleton()
         {
             MedicineList = new DoubleLinkedList<Medicine>();
+            CustomerListInformation = new List<Customer>();
+            IndexList = new BinaryTree<ClassMedicine>();
+            InformationFile = new List<FileDownload>();
         }
 
         public static Singleton Instance

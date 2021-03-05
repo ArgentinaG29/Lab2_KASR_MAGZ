@@ -7,6 +7,7 @@ namespace ListLibrary
     public class Tree<T> where T : IComparable
     {
         protected TreeNode<T> root;
+        public string PreOrdenS;
 
         public Tree()
         {
@@ -15,5 +16,12 @@ namespace ListLibrary
 
         public virtual void Insert(T value) { }
         public virtual TreeNode<T> InsertSub(TreeNode<T> root, TreeNode<T> new_node) { return root; }
+        public virtual TreeNode<T> ReturnRoot() { return root; }
+
+        public virtual void PreOrder(TreeNode<T> root) { }
+
+        public virtual void InOrder(TreeNode<T> root) { }
+
+        public virtual void PostOrder(TreeNode<T> root) { }
     }
 }

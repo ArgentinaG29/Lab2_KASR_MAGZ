@@ -1,0 +1,13 @@
+1,M,"Adverse effect of amphetamines, subsequent encounter","Medline Industries, Inc.",$540.21,10
+2,V,"Fibrous dysplasia (monostotic), unspecified shoulder",Qualitest Pharmaceuticals,$159.61,5
+3,E,Asymptomatic varicose veins of right lower extremity,"Teva Women's Health, Inc.",$825.55,0
+4,P,"Disp fx of lateral epicondyl of r humer, 7thP",Walgreen Company,$937.66,2
+5,B,"Poisoning by succinimides and oxazolidinediones, undet",Jubilant HollisterStier LLC,$812.10,0
+6,L,"Unspecified injury of lung, bilateral, initial encounter",Apotheca Company,$514.56,3
+7,D,Partial traumatic transphalangeal amputation of l rng fngr,Mylan Institutional Inc.,$336.21,9
+8,N,Other superficial bite of unspecified back wall of thorax,Clinical Solutions Wholesale,$858.27,11
+9,V,"Fibrous dysplasia (monostotic), unspecified shoulder",Qualitest Pharmaceuticals,$159.61,5
+10,A,"Struck by falling object on oth powered watercraft, init","NCS HealthCare of KY, Inc dba Vangard Labs",$136.34,11
+11,D,Partial traumatic transphalangeal amputation of l rng fngr,Mylan Institutional Inc.,$336.21,9
+12,T,"Corrosion of second degree back of right hand, sequela",3M ESPE Dental Products,$699.66,13
+13,Z,"Milt op w thermal radn effect of nuclear weapon, milt, init","International Labs, Inc.",$328.92,0

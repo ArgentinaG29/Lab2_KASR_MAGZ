@@ -16,6 +16,7 @@ namespace Lab2_KASR_MAGZ.Controllers
     public class HealthController : Controller
     {
         private IHostingEnvironment Environment;
+        public string routeD;
 
         public HealthController(IHostingEnvironment _environment)
         {
@@ -34,6 +35,7 @@ namespace Lab2_KASR_MAGZ.Controllers
             int IdNumber = 1;
             if(postedFile != null)
             {
+                bool Same = false;
                 string path = Path.Combine(this.Environment.WebRootPath, "Uploads");
                 if (!Directory.Exists(path))
                 {
@@ -55,6 +57,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                 while (!streamReader.EndOfStream)
                 {
                     CurrentLine = streamReader.ReadLine();
+                    Same = false;
                     string[] FileInformationList = CurrentLine.Split(',');
                     int pos = 1;
                     string FileName = "";
@@ -182,28 +185,49 @@ namespace Lab2_KASR_MAGZ.Controllers
                     
                     int FileStock = Convert.ToInt32(removeSome);
 
-                    var FileMedicine = new Models.Medicine
+                    for(int i=0; i< Singleton.Instance.MedicineList.Count(); i++)
                     {
-                        Id = IdNumber,
-                        Name = FileName,
-                        Description = FileDescription,
-                        ProductionHouse = FileHome,
-                        Price = FilePrice,
-                        Stock = FileStock
-                    };
+                        string CompNameA = FileName.ToUpper();
+                        string CompNameB = Convert.ToString(Singleton.Instance.MedicineList.ElementAt(i).Name).ToUpper();
+                        if (FileName.ToUpper() == Convert.ToString(Singleton.Instance.MedicineList.ElementAt(i).Name).ToUpper())
+                        {
+                            Same = true;
+                        }
+                    }
 
-                    if(IdNumber == 1)
+                    if(Same == false)
                     {
-                        Singleton.Instance.MedicineList.InsertAtStart(FileMedicine);
+                        var FileMedicine = new Models.Medicine
+                        {
+                            Id = IdNumber,
+                            Name = FileName,
+                            Description = FileDescription,
+                            ProductionHouse = FileHome,
+                            Price = FilePrice,
+                            Stock = FileStock
+                        };
+
+                        var FileIndex = new Models.Data.ClassMedicine
+                        {
+                            Position = IdNumber,
+                            Name = FileName
+                        };
+
+                        if (IdNumber == 1)
+                        {
+                            Singleton.Instance.MedicineList.InsertAtStart(FileMedicine);
+                        }
+                        else
+                        {
+                            Singleton.Instance.MedicineList.InsertAtEnd(FileMedicine);
+                        }
+
+                        Singleton.Instance.IndexList.Insert(FileIndex);
+                        IdNumber++;
+
                     }
-                    else
-                    {
-                        Singleton.Instance.MedicineList.InsertAtEnd(FileMedicine);
-                    }
-                    IdNumber++;
+
                 }
-
-                return RedirectToAction(nameof(Index));
             }
 
             return View();
@@ -276,6 +300,108 @@ namespace Lab2_KASR_MAGZ.Controllers
             {
                 return View();
             }
+        }
+
+
+
+        public ActionResult NewRessuply()
+        {
+            for(int i =0; i < Singleton.Instance.MedicineList.Count(); i++)
+            {
+                if(Singleton.Instance.MedicineList.ElementAt(i).Stock == 0)
+                {
+                    int IdNumer = Singleton.Instance.MedicineList.ElementAt(i).Id;
+
+                    int NewStockMedicine = Calculations.resupply();
+                    var NewMedicineStock = new Models.Medicine
+                    {
+                        Id = Singleton.Instance.MedicineList.ElementAt(i).Id,
+                        Name = Singleton.Instance.MedicineList.ElementAt(i).Name,
+                        Description = Singleton.Instance.MedicineList.ElementAt(i).Description,
+                        ProductionHouse = Singleton.Instance.MedicineList.ElementAt(i).ProductionHouse,
+                        Price = Singleton.Instance.MedicineList.ElementAt(i).Price,
+                        Stock = NewStockMedicine
+                    };
+
+                    var NewIndexStock = new Models.Data.ClassMedicine
+                    {
+                        Position=IdNumer,
+                        Name = Singleton.Instance.MedicineList.ElementAt(i).Name
+                    };
+
+                    if(i==0)
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtStart();
+                        Singleton.Instance.MedicineList.InsertAtStart(NewMedicineStock);
+                    }
+                    else if(i == Singleton.Instance.MedicineList.Count() - 1)
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtEnd();
+                        Singleton.Instance.MedicineList.InsertAtEnd(NewMedicineStock);
+                    }
+                    else
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtPosition(i);
+                        Singleton.Instance.MedicineList.InsertAtPosition(NewMedicineStock, i);
+                    }
+
+                    Singleton.Instance.IndexList.Insert(NewIndexStock);
+
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public ActionResult DownloadPre()
+        {
+            string text = "";
+            Singleton.Instance.InformationFile.Clear();
+
+            Singleton.Instance.IndexList.PreOrder(Singleton.Instance.IndexList.ReturnRoot());
+
+            for (int i = 0; i < Singleton.Instance.InformationFile.Count; i++)
+            {
+                string NameRoute = Singleton.Instance.InformationFile.ElementAt(i).NameMedicineFile;
+                text += NameRoute + ", ";
+            }
+            StreamWriter writer = new StreamWriter("PreOrder.txt");
+            writer.Write(text);
+            writer.Close();
+            return RedirectToAction(nameof(Index));
+        }
+        public ActionResult DownloadIn()
+        {
+            string text = "";
+            Singleton.Instance.InformationFile.Clear();
+
+            Singleton.Instance.IndexList.InOrder(Singleton.Instance.IndexList.ReturnRoot());
+
+            for (int i =0; i<Singleton.Instance.InformationFile.Count; i++)
+            {
+                string NameRoute = Singleton.Instance.InformationFile.ElementAt(i).NameMedicineFile;
+                text += NameRoute + ", ";
+            }
+            StreamWriter writer = new StreamWriter("InOrder.txt");
+            writer.Write(text);
+            writer.Close();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult DownloadPost()
+        {
+            string text = "";
+            Singleton.Instance.InformationFile.Clear();
+
+            Singleton.Instance.IndexList.PostOrder(Singleton.Instance.IndexList.ReturnRoot());
+
+            for (int i = 0; i < Singleton.Instance.InformationFile.Count; i++)
+            {
+                string NameRoute = Singleton.Instance.InformationFile.ElementAt(i).NameMedicineFile;
+                text += NameRoute + ", ";
+            }
+            StreamWriter writer = new StreamWriter("PostOrder.txt");
+            writer.Write(text);
+            writer.Close();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

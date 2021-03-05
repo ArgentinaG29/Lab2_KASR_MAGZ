@@ -14,11 +14,39 @@
 <p>
 
 </p>
-
+<b><p>ENTER NEW PURCHASE</p></b>
+<form asp-controller="Purchase" asp-action="Index">
+    <input type="submit" value="Buy" />
+</form>
 <p>
-    <a asp-action="Create">Create New</a>
+
 </p>
-<table class="table">
+<b><p>SUPPLY MEDCINES</p></b>
+<form asp-controller="Health" asp-action="NewRessuply">
+    <input type="submit" value="Resupply" />
+</form>
+<p>
+</p>
+<p>
+</p>
+<p><b>SHOW PreOrder/InOrder/PostOrder</b></p>
+<form asp-controller="Health" asp-action="DownloadPre">
+    <input type="submit" value="Pre-Order" />
+</form>
+<p>
+
+</p>
+<form asp-controller="Health" asp-action="DownloadIn">
+    <input type="submit" value="In-Order" />
+</form>
+<p>
+
+</p>
+<form asp-controller="Health" asp-action="DownloadPost">
+    <input type="submit" value="Post-Order" />
+</form>
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -72,4 +100,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@

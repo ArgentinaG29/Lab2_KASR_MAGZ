@@ -9,6 +9,12 @@ namespace ListLibrary
         public BinaryTree()
         {
             root = null;
+            PreOrdenS = "";
+        }
+
+        public override TreeNode<T> ReturnRoot()
+        {
+            return root;
         }
 
         public override void Insert(T value)
@@ -41,6 +47,36 @@ namespace ListLibrary
                 root.left = InsertSub(root.left, new_node);
             }
             return root;
+        }
+
+        public override void PreOrder(TreeNode<T> root)
+        {
+            if (root != null)
+            {
+                bool HelpAux = root.value.Equals(root.value);
+                PreOrder(root.left);
+                PreOrder(root.right);
+            }
+        }
+
+        public override void InOrder(TreeNode<T> root)
+        {
+            if (root != null)
+            {
+                InOrder(root.left);
+                bool HelpAux = root.value.Equals(root.value);
+                InOrder(root.right);
+            }
+        }
+
+        public override void PostOrder(TreeNode<T> root)
+        {
+            if(root != null)
+            {
+                PostOrder(root.left);
+                PostOrder(root.right);
+                bool HelpAux = root.value.Equals(root.value);
+            }
         }
     }
 }

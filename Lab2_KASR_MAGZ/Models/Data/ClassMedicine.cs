@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lab2_KASR_MAGZ.Models.Data;
+using Lab2_KASR_MAGZ.Models;
 
 namespace Lab2_KASR_MAGZ.Models.Data
 {
@@ -34,6 +36,25 @@ namespace Lab2_KASR_MAGZ.Models.Data
                     return 0;
                 }
             }
+        }
+
+        public void InformationTree(object obj)
+        {
+            var infot = ((ClassMedicine)obj).Name;
+            string Aux = Convert.ToString(infot);
+
+            var InformationFileD = new Models.FileDownload
+            {
+                NameMedicineFile = Aux
+            };
+
+            Singleton.Instance.InformationFile.Add(InformationFileD);
+            
+        }
+        public override bool Equals(object obj)
+        {
+            InformationTree(obj);
+            return true;
         }
 
         public int GetNumber(string letter)

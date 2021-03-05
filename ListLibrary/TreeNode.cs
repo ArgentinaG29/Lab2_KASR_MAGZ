@@ -8,6 +8,7 @@ namespace ListLibrary
     {
         public TreeNode<T> right;
         public TreeNode<T> left;
+        
 
         public TreeNode()
         {
