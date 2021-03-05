@@ -42,5 +42,25 @@ namespace ListLibrary
             }
             return root;
         }
+
+        public override TreeNode<T> Search(T searched, TreeNode<T> root)
+        {
+            int comparison = searched.CompareTo(root.value);
+            if (root == null || comparison == 0)
+            {
+                return root;
+            }
+            else
+            {
+                if (comparison == 1)
+                {
+                    return Search(searched, root.right);
+                }
+                else
+                {
+                    return Search(searched, root.left);
+                }
+            }
+        }
     }
 }
