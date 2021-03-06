@@ -20,7 +20,8 @@ namespace Lab2_KASR_MAGZ.Models
             for(int i =0; i < NameList.Count(); i++)
             {
                 double part1 = Convert.ToDouble(NameList.ElementAt(i).Price) * Convert.ToInt32(NameList.ElementAt(i).Stock);
-                Total += part1;
+                double part2 = Convert.ToDouble(Math.Round(part1, 2));
+                Total += part2;
             }
             return Total;
         }
