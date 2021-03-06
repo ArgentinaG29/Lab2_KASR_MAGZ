@@ -22,6 +22,7 @@ namespace Lab2_KASR_MAGZ.Models
                 double part1 = Convert.ToDouble(NameList.ElementAt(i).Price) * Convert.ToInt32(NameList.ElementAt(i).Stock);
                 double part2 = Convert.ToDouble(Math.Round(part1, 2));
                 Total += part2;
+                Total = Convert.ToDouble(Math.Round(Total, 2));
             }
             return Total;
         }
