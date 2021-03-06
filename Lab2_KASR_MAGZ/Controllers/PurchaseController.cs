@@ -16,6 +16,7 @@ namespace Lab2_KASR_MAGZ.Controllers
         // GET: PurchaseController
         public ActionResult Index()
         {
+            Singleton.Instance.SearchingData.Clear();
             return View(Singleton.Instance.ProductsList);
         }
 
@@ -250,6 +251,35 @@ namespace Lab2_KASR_MAGZ.Controllers
         }
 
         [HttpPost]
+        public ActionResult SearchMed(string NameMS)
+        {
+            var NewSearch = new Models.Data.ClassMedicine
+            {
+                Name = NameMS
+            };
+
+            TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
+            new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+            int Line = new_node.value.Position;
+            if (Line != 0)
+            {
+                var OldProduct = new Models.Medicine
+                {
+                    Id = Line,
+                    Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
+                    Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
+                    ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
+                    Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
+                    Stock = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock
+                };
+                Singleton.Instance.SearchingData.Add(OldProduct);
+            }
+
+            return View(Singleton.Instance.SearchingData);
+        }
+
+
+        [HttpPost]
         public ActionResult SearchMedicine(string NameMS, int quantity)
         {
             try
@@ -261,7 +291,12 @@ namespace Lab2_KASR_MAGZ.Controllers
 
                 TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
                 new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
-                int Line = new_node.value.Position;
+                int Line = 0;
+                if (new_node != null)
+                {
+                    Line = new_node.value.Position;
+                }
+                
                 if (Line != 0)
                 {
                     int StockAvailable = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock;
@@ -290,55 +325,76 @@ namespace Lab2_KASR_MAGZ.Controllers
                         };
 
                         int contando = Singleton.Instance.ProductsList.Count();
-                        if(contando != 0)
+                        if (contando != 0)
                         {
                             Singleton.Instance.ProductsList.RemoveAt(contando - 1);
                         }
-                        
 
-                        if (Unsold != 0)
+                        //ELIMINAR Y ACTUALIZAR NUEVO VALOR DE STOCK
+                        if ((Line - 1) == 0)
                         {
-                            //ELIMINAR Y ACTUALIZAR NUEVO VALOR DE STOCK
-                            if ((Line - 1) == 0)
-                            {
-                                Singleton.Instance.MedicineList.ExtractAtStart();
-                                Singleton.Instance.MedicineList.InsertAtStart(NewUnsold);
-                            }
-                            else if (Line - 1 == Singleton.Instance.MedicineList.Count())
-                            {
-                                Singleton.Instance.MedicineList.ExtractAtEnd();
-                                Singleton.Instance.MedicineList.InsertAtEnd(NewUnsold);
-                            }
-                            else
-                            {
-                                Singleton.Instance.MedicineList.ExtractAtPosition(Line - 1);
-                                Singleton.Instance.MedicineList.InsertAtPosition(NewUnsold, Line - 1);
-                            }
-
-                            //AGREGAR A LA NUEVA LISTA
-                            Singleton.Instance.ProductsList.Add(NewProduct);
-
-                            double TotalNumber = Calculations.NTotal(Singleton.Instance.ProductsList);
-                            var NewTotal = new Models.Medicine
-                            {
-                                Name = "TOTAL",
-                                Description = "-",
-                                ProductionHouse = "-",
-                                Id=000,
-                                Stock = Calculations.ProductTotal(Singleton.Instance.ProductsList),
-                                Price = TotalNumber
-                            };
-
-                            Singleton.Instance.ProductsList.Add(NewTotal);
+                            Singleton.Instance.MedicineList.ExtractAtStart();
+                            Singleton.Instance.MedicineList.InsertAtStart(NewUnsold);
+                        }
+                        else if (Line - 1 == Singleton.Instance.MedicineList.Count())
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtEnd();
+                            Singleton.Instance.MedicineList.InsertAtEnd(NewUnsold);
                         }
                         else
                         {
-                            //ELIMINAR
+                            Singleton.Instance.MedicineList.ExtractAtPosition(Line - 1);
+                            Singleton.Instance.MedicineList.InsertAtPosition(NewUnsold, Line - 1);
                         }
+
+                        //AGREGAR A LA NUEVA LISTA
+                        Singleton.Instance.ProductsList.Add(NewProduct);
+
+                        double TotalNumber = Calculations.NTotal(Singleton.Instance.ProductsList);
+                        var NewTotal = new Models.Medicine
+                        {
+                            Name = "TOTAL",
+                            Description = "-",
+                            ProductionHouse = "-",
+                            Id = 000,
+                            Stock = Calculations.ProductTotal(Singleton.Instance.ProductsList),
+                            Price = TotalNumber
+                        };
+
+                        Singleton.Instance.ProductsList.Add(NewTotal);
+
+                        if (Unsold == 0)
+                        {
+                            //ELIMINAR
+                            Singleton.Instance.IndexList.Delete(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+                        }
+                        
+
+                        
                     }
+                    else
+                    {
+                        var OldProduct = new Models.Medicine
+                        {
+                            Id = Line,
+                            Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
+                            Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
+                            ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
+                            Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
+                            Stock = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock
+                        };
+                        Singleton.Instance.SearchingData.Add(OldProduct);
+
+                        return View(Singleton.Instance.SearchingData);
+                    }
+                }
+                else
+                {
+                    return View(Singleton.Instance.SearchingData);
                 }
 
                 return RedirectToAction(nameof(Index));
+
             }
             catch
             {

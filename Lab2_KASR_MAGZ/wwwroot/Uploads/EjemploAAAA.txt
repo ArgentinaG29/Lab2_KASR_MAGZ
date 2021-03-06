@@ -10,3 +10,4 @@
 10,Estuardo,"Corrosion of second degree back of right hand, sequela",3M ESPE Dental Products,$699.66,13
 11,Melissa,"Milt op w thermal radn effect of nuclear weapon, milt, init","International Labs, Inc.",$328.92,17
 12,Arturo,"Milt op w thermal radn effect of nuclear weapon, milt, init","International Labs, Inc.",$328.92,18
+13,Moore Medical Antacid,"Nondisp seg fx shaft of unsp tibia, 7thN",Moore Medical LLC,$172.60,5

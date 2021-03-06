@@ -102,6 +102,51 @@ namespace ListLibrary
                 }
             }
         }
+        public override TreeNode<T> Delete(T value, TreeNode<T> root)
+        {
+            int comparison = value.CompareTo(root.value);
+            if (root == null)
+            {
+                return root;
+            }
 
+            if (comparison == -1)
+            {
+                root.left = Delete(value, root.left);
+            }
+            else
+            {
+                if (comparison == 1)
+                {
+                    root.right = Delete(value, root.right);
+                }
+                else
+                {                    
+                    if (root.left == null)
+                    {
+                        return root.right;
+                    }
+                    else if (root.right == null)
+                    {
+                        return root.left;
+                    }
+                    
+                    root.value = GetMinor(root.right).value;
+                    root.right = Delete(root.value, root.right);
+                }
+            }
+            return root;
+        }
+
+        public override TreeNode<T> GetMinor(TreeNode<T> root)
+        {
+            TreeNode<T> min = root;
+            while(root.left != null)
+            {
+                min = root.left;
+                root = root.left;
+            }
+            return min;
+        }
     }
 }

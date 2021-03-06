@@ -25,7 +25,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
             int i = 0;
             int result = 0;
 
-            if(comparer != Name)
+            if(comparer.ToUpper() != Name.ToUpper())
             {
                 while(flag == false && i < comparer.Length && i < Name.Length)
                 {
@@ -167,6 +167,9 @@ namespace Lab2_KASR_MAGZ.Models.Data
                     break;
                 case ("Z"):
                     number = 26;
+                    break;
+                case (" "):
+                    number = 27;
                     break;
                 default:
                     break;

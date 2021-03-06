@@ -1,0 +1,7 @@
+Customer name: Aura Marina
+NIT: 123
+Address: ddd
+Moore Medical Antacid, Nondisp seg fx shaft of unsp tibia,  7thN, Moore Medical LLC, 172.6, 1, 
+Multi-Vitamin Fluoride Drops, Unilateral post-traumatic osteoarthritis,  unspecified hip, H.J. Harkins Company,  Inc., 295.99, 2, 
+Xolox, Conjunctival hyperemia, Rebel Distributors Corp, 920.9, 3, 
+TOTAL, -, -, 3527.2799999999997, 6, 

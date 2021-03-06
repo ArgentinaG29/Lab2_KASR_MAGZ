@@ -14,6 +14,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
         public Tree<ClassMedicine> IndexList;
         public List<FileDownload> InformationFile;
         public List<Medicine> ProductsList;
+        public List<Medicine> SearchingData;
 
         private Singleton()
         {
@@ -22,6 +23,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
             IndexList = new BinaryTree<ClassMedicine>();
             InformationFile = new List<FileDownload>();
             ProductsList = new List<Medicine>();
+            SearchingData = new List<Medicine>();
         }
 
         public static Singleton Instance
