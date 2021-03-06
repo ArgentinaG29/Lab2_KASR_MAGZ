@@ -102,6 +102,7 @@ namespace ListLibrary
                 }
             }
         }
+
         public override TreeNode<T> Delete(T value, TreeNode<T> root)
         {
             int comparison = value.CompareTo(root.value);
@@ -121,7 +122,7 @@ namespace ListLibrary
                     root.right = Delete(value, root.right);
                 }
                 else
-                {                    
+                {
                     if (root.left == null)
                     {
                         return root.right;
@@ -130,7 +131,7 @@ namespace ListLibrary
                     {
                         return root.left;
                     }
-                    
+
                     root.value = GetMinor(root.right).value;
                     root.right = Delete(root.value, root.right);
                 }
@@ -141,7 +142,7 @@ namespace ListLibrary
         public override TreeNode<T> GetMinor(TreeNode<T> root)
         {
             TreeNode<T> min = root;
-            while(root.left != null)
+            while (root.left != null)
             {
                 min = root.left;
                 root = root.left;

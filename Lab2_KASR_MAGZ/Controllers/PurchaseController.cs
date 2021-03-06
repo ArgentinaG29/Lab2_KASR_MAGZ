@@ -250,33 +250,6 @@ namespace Lab2_KASR_MAGZ.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public ActionResult SearchMed(string NameMS)
-        {
-            var NewSearch = new Models.Data.ClassMedicine
-            {
-                Name = NameMS
-            };
-
-            TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
-            new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
-            int Line = new_node.value.Position;
-            if (Line != 0)
-            {
-                var OldProduct = new Models.Medicine
-                {
-                    Id = Line,
-                    Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
-                    Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
-                    ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
-                    Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
-                    Stock = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock
-                };
-                Singleton.Instance.SearchingData.Add(OldProduct);
-            }
-
-            return View(Singleton.Instance.SearchingData);
-        }
 
 
         [HttpPost]

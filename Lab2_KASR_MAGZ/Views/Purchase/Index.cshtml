@@ -5,33 +5,32 @@
 
 }
 
-<h1>Customer</h1>
-<label>Only enter the data once</label>
+<h1>Purchase</h1>
+<label><b>Only enter the data once</b></label>
 <section>
     <form action="Purchase/ClientInformation" method="post">
-        <label>customer name </label>
+        <label>Name</label>
         <input type="type" name="Name" value="" />
         <p>
         </p>
-        <label>Customer Nit</label>
+        <label>Nit</label>
         <input type="type" name="NIT" value="" />
         <p>
         </p>
-        <label>Customer address</label>
+        <label>Address</label>
         <input type="type" name="Direct" value="" />
-        <button>Send Customer</button>
+        <button>Confirm</button>
     </form>
 </section>
 <p>
 </p>
 <section>
-    <form action="Purchase/SearchMedicine" method="post">
-        <label>Enter the data of product</label>
-        <label>Producto a buscar</label>
+    <form action="Purchase/SearchMedicine" method="post">        
+        <label><b>Search product</b></label>
         <input type="type" name="NameMS" value="" />
         <p>
         </p>
-        <label>Cantidad de producto</label>
+        <label><b>Quantity</b></label>
         <input type="type" name="quantity" value="" />
         <p>
         </p>
@@ -39,16 +38,16 @@
     </form>
 </section>
 
-<p>
-
-</p>
+<br />
 
 <form asp-controller="Purchase" asp-action="DownloadBill">
     <input type="submit" value="Download Bill" />
 </form>
+<br />
 <form asp-controller="Health" asp-action="Index">
     <input type="submit" value="Finalize" />
 </form>
+<br />
 
 <table class="table">
     <thead>

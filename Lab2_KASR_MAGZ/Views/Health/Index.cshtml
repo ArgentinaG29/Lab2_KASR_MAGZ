@@ -4,43 +4,32 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-<b><p>IMPORT FILE</p></b>
+<h1>Tu Salud en mis Manos</h1>
+<b>IMPORT FILE</b>
 <form asp-controller="Health" asp-action="Index" method="post" enctype="multipart/form-data">
     <input type="file" name="postedFile" value="" />
     <input type="submit" value="Import" />
 </form>
-<p>
-
-</p>
-<b><p>ENTER NEW PURCHASE</p></b>
+<br />
+<b>ENTER NEW PURCHASE</b>
 <form asp-controller="Purchase" asp-action="Index">
     <input type="submit" value="Buy" />
 </form>
-<p>
-
-</p>
-<b><p>SUPPLY MEDCINES</p></b>
+<br />
+<b>SUPPLY MEDCINES</b>
 <form asp-controller="Health" asp-action="NewRessuply">
     <input type="submit" value="Resupply" />
 </form>
-<p>
-</p>
-<p>
-</p>
+<br />
 <p><b>SHOW PreOrder/InOrder/PostOrder</b></p>
 <form asp-controller="Health" asp-action="ListPre">
     <input type="submit" value="Pre-Order" />
 </form>
-<p>
-
-</p>
+<br />
 <form asp-controller="Health" asp-action="ListIn">
     <input type="submit" value="In-Order" />
 </form>
-<p>
-
-</p>
+<br />
 <form asp-controller="Health" asp-action="ListPost">
     <input type="submit" value="Post-Order" />
 </form>
