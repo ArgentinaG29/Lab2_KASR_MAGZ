@@ -306,17 +306,25 @@ namespace Lab2_KASR_MAGZ.Controllers
         [HttpPost]
         public ActionResult ClientInformation(string Name, int NIT, string Direct)
         { 
-            if(Singleton.Instance.CustomerListInformation.Count() == 0)
+            if(Name != ""  && NIT != 0 && Direct != "")
             {
-                var newClient = new Models.Customer
+                if (Singleton.Instance.CustomerListInformation.Count() == 0)
                 {
-                    NameCustomer = Name,
-                    Nit = NIT,
-                    Direction = Direct
-                };
-                Singleton.Instance.CustomerListInformation.Add(newClient);
+                    var newClient = new Models.Customer
+                    {
+                        NameCustomer = Name,
+                        Nit = NIT,
+                        Direction = Direct
+                    };
+                    Singleton.Instance.CustomerListInformation.Add(newClient);
+                }
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
 
 
@@ -326,116 +334,124 @@ namespace Lab2_KASR_MAGZ.Controllers
         {
             try
             {
-                var NewSearch = new Models.Data.ClassMedicine
+                if(NameMS != "" && quantity!=0)
                 {
-                    Name = NameMS
-                };
-
-                TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
-                new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
-                int Line = 0;
-                if (new_node != null)
-                {
-                    Line = new_node.value.Position;
-                }
-                
-                if (Line != 0)
-                {
-                    int StockAvailable = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock;
-                    int Unsold = StockAvailable - quantity;
-
-                    if (quantity <= StockAvailable)
+                    var NewSearch = new Models.Data.ClassMedicine
                     {
-                        var NewProduct = new Models.Medicine
-                        {
-                            Id = Line,
-                            Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
-                            Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
-                            ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
-                            Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
-                            Stock = quantity
-                        };
+                        Name = NameMS
+                    };
 
-                        var NewUnsold = new Models.Medicine
-                        {
-                            Id = Line,
-                            Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
-                            Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
-                            ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
-                            Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
-                            Stock = Unsold
-                        };
+                    TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
+                    new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+                    int Line = 0;
+                    if (new_node != null)
+                    {
+                        Line = new_node.value.Position;
+                    }
 
-                        int contando = Singleton.Instance.ProductsList.Count();
-                        if (contando != 0)
-                        {
-                            Singleton.Instance.ProductsList.RemoveAt(contando - 1);
-                        }
+                    if (Line != 0)
+                    {
+                        int StockAvailable = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock;
+                        int Unsold = StockAvailable - quantity;
 
-                        //ELIMINAR Y ACTUALIZAR NUEVO VALOR DE STOCK
-                        if ((Line - 1) == 0)
+                        if (quantity <= StockAvailable)
                         {
-                            Singleton.Instance.MedicineList.ExtractAtStart();
-                            Singleton.Instance.MedicineList.InsertAtStart(NewUnsold);
-                        }
-                        else if (Line - 1 == Singleton.Instance.MedicineList.Count())
-                        {
-                            Singleton.Instance.MedicineList.ExtractAtEnd();
-                            Singleton.Instance.MedicineList.InsertAtEnd(NewUnsold);
+                            var NewProduct = new Models.Medicine
+                            {
+                                Id = Line,
+                                Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
+                                Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
+                                ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
+                                Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
+                                Stock = quantity
+                            };
+
+                            var NewUnsold = new Models.Medicine
+                            {
+                                Id = Line,
+                                Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
+                                Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
+                                ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
+                                Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
+                                Stock = Unsold
+                            };
+
+                            int contando = Singleton.Instance.ProductsList.Count();
+                            if (contando != 0)
+                            {
+                                Singleton.Instance.ProductsList.RemoveAt(contando - 1);
+                            }
+
+                            //ELIMINAR Y ACTUALIZAR NUEVO VALOR DE STOCK
+                            if ((Line - 1) == 0)
+                            {
+                                Singleton.Instance.MedicineList.ExtractAtStart();
+                                Singleton.Instance.MedicineList.InsertAtStart(NewUnsold);
+                            }
+                            else if (Line - 1 == Singleton.Instance.MedicineList.Count())
+                            {
+                                Singleton.Instance.MedicineList.ExtractAtEnd();
+                                Singleton.Instance.MedicineList.InsertAtEnd(NewUnsold);
+                            }
+                            else
+                            {
+                                Singleton.Instance.MedicineList.ExtractAtPosition(Line - 1);
+                                Singleton.Instance.MedicineList.InsertAtPosition(NewUnsold, Line - 1);
+                            }
+
+                            //AGREGAR A LA NUEVA LISTA
+                            Singleton.Instance.ProductsList.Add(NewProduct);
+
+                            double TotalNumber = Calculations.NTotal(Singleton.Instance.ProductsList);
+                            var NewTotal = new Models.Medicine
+                            {
+                                Name = "TOTAL",
+                                Description = "-",
+                                ProductionHouse = "-",
+                                Id = 000,
+                                Stock = Calculations.ProductTotal(Singleton.Instance.ProductsList),
+                                Price = TotalNumber
+                            };
+
+                            Singleton.Instance.ProductsList.Add(NewTotal);
+
+                            if (Unsold == 0)
+                            {
+                                //ELIMINAR
+                                Singleton.Instance.IndexList.Delete(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+                            }
+
+
+
                         }
                         else
                         {
-                            Singleton.Instance.MedicineList.ExtractAtPosition(Line - 1);
-                            Singleton.Instance.MedicineList.InsertAtPosition(NewUnsold, Line - 1);
+                            var OldProduct = new Models.Medicine
+                            {
+                                Id = Line,
+                                Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
+                                Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
+                                ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
+                                Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
+                                Stock = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock
+                            };
+                            Singleton.Instance.SearchingData.Add(OldProduct);
+
+                            return View(Singleton.Instance.SearchingData);
                         }
-
-                        //AGREGAR A LA NUEVA LISTA
-                        Singleton.Instance.ProductsList.Add(NewProduct);
-
-                        double TotalNumber = Calculations.NTotal(Singleton.Instance.ProductsList);
-                        var NewTotal = new Models.Medicine
-                        {
-                            Name = "TOTAL",
-                            Description = "-",
-                            ProductionHouse = "-",
-                            Id = 000,
-                            Stock = Calculations.ProductTotal(Singleton.Instance.ProductsList),
-                            Price = TotalNumber
-                        };
-
-                        Singleton.Instance.ProductsList.Add(NewTotal);
-
-                        if (Unsold == 0)
-                        {
-                            //ELIMINAR
-                            Singleton.Instance.IndexList.Delete(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
-                        }
-                        
-
-                        
                     }
                     else
                     {
-                        var OldProduct = new Models.Medicine
-                        {
-                            Id = Line,
-                            Name = Singleton.Instance.MedicineList.ElementAt(Line - 1).Name,
-                            Description = Singleton.Instance.MedicineList.ElementAt(Line - 1).Description,
-                            ProductionHouse = Singleton.Instance.MedicineList.ElementAt(Line - 1).ProductionHouse,
-                            Price = Singleton.Instance.MedicineList.ElementAt(Line - 1).Price,
-                            Stock = Singleton.Instance.MedicineList.ElementAt(Line - 1).Stock
-                        };
-                        Singleton.Instance.SearchingData.Add(OldProduct);
-
                         return View(Singleton.Instance.SearchingData);
                     }
+
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    return View(Singleton.Instance.SearchingData);
+                    return RedirectToAction(nameof(Index));
                 }
-
-                return RedirectToAction(nameof(Index));
+                
 
             }
             catch
@@ -446,22 +462,30 @@ namespace Lab2_KASR_MAGZ.Controllers
 
         public ActionResult DownloadBill()
         {
-            string text = "";
-            text += "Customer name: " + Singleton.Instance.CustomerListInformation.ElementAt(0).NameCustomer + "\n" + "NIT: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Nit + "\n"+ "Address: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Direction + "\n";
-
-
-            for (int i = 0; i < Singleton.Instance.ProductsList.Count; i++)
+            if(Singleton.Instance.ProductsList.Count != 0)
             {
-                text += Singleton.Instance.ProductsList.ElementAt(i).Name + ", ";
-                text += Singleton.Instance.ProductsList.ElementAt(i).Description + ", ";
-                text += Singleton.Instance.ProductsList.ElementAt(i).ProductionHouse + ", ";
-                text += Singleton.Instance.ProductsList.ElementAt(i).Price + ", ";
-                text += Singleton.Instance.ProductsList.ElementAt(i).Stock + ", " + "\n";
+                string text = "";
+                text += "Customer name: " + Singleton.Instance.CustomerListInformation.ElementAt(0).NameCustomer + "\n" + "NIT: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Nit + "\n" + "Address: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Direction + "\n";
+
+
+                for (int i = 0; i < Singleton.Instance.ProductsList.Count; i++)
+                {
+                    text += Singleton.Instance.ProductsList.ElementAt(i).Name + ", ";
+                    text += Singleton.Instance.ProductsList.ElementAt(i).Description + ", ";
+                    text += Singleton.Instance.ProductsList.ElementAt(i).ProductionHouse + ", ";
+                    text += Singleton.Instance.ProductsList.ElementAt(i).Price + ", ";
+                    text += Singleton.Instance.ProductsList.ElementAt(i).Stock + ", " + "\n";
+                }
+                StreamWriter writer = new StreamWriter("Bill.txt");
+                writer.Write(text);
+                writer.Close();
+                return RedirectToAction(nameof(Index));
             }
-            StreamWriter writer = new StreamWriter("Bill.txt");
-            writer.Write(text);
-            writer.Close();
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
     }
 }

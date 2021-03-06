@@ -1,9 +1,5 @@
-Customer name: Aura Marina
-NIT: 123
-Address: ddd
-Moore Medical Antacid, Nondisp seg fx shaft of unsp tibia,  7thN, Moore Medical LLC, 172.6, 1, 
-ESIKA, Adverse effect of unsp drug/meds/biol subst,  subs, Ventura Corporation (San Juan,  P.R), 546.45, 3, 
-Exelon, Toxic effect of methanol,  assault,  sequela, Physicians Total Care,  Inc., 755.38, 2, 
-Babyganics, Pedestrian on foot injured in collision w hv veh in traf, Autumn Harp,  Inc., 947.28, 1, 
-Pacerone, Other traumatic spondylolisthesis of sixth cervical vertebra, Upsher-Smith Laboratories,  Inc., 646.53, 10, 
-TOTAL, -, -, 10735.289999999999, 17, 
+Customer name: Matt
+NIT: 51256598
+Address: London
+Venlafaxine, Other superficial bite of unspecified back wall of thorax, Clinical Solutions Wholesale, 858.27, 2, 
+TOTAL, -, -, 1716.54, 2, 
