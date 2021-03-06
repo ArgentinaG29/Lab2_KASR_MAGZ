@@ -50,31 +50,7 @@ namespace Lab2_KASR_MAGZ.Controllers
         // GET: PurchaseController/Edit/5
         public ActionResult Edit(int id)
         {
-            int pos = 0;
-            bool Finding = false;
-
-            while (Finding == false)
-            {
-                if (Convert.ToInt32(Singleton.Instance.ProductsList.ElementAt(pos).Id) == id)
-                {
-                    Finding = true;
-                }
-                else
-                {
-                    pos++;
-                }
-            }
-
-            var EditProduct = Singleton.Instance.ProductsList.ElementAt(pos);
-            return View(EditProduct);
-        }
-
-        // POST: PurchaseController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            if(id!=0)
             {
                 int pos = 0;
                 bool Finding = false;
@@ -91,50 +67,99 @@ namespace Lab2_KASR_MAGZ.Controllers
                     }
                 }
 
-                int StockNew = Convert.ToInt32(collection["Stock"]);
-                string NameEdit = Singleton.Instance.ProductsList.ElementAt(pos).Name;
-                int StockOld = Singleton.Instance.ProductsList.ElementAt(pos).Stock;
-                int Stock2Old = Singleton.Instance.MedicineList.ElementAt(id - 1).Stock;
-
-                var EditMedicineS = new Models.Medicine
-                {
-                    Id = Singleton.Instance.ProductsList.ElementAt(pos).Id,
-                    Name = Singleton.Instance.ProductsList.ElementAt(pos).Name,
-                    Description = Singleton.Instance.ProductsList.ElementAt(pos).Description,
-                    ProductionHouse = Singleton.Instance.ProductsList.ElementAt(pos).ProductionHouse,
-                    Price = Singleton.Instance.ProductsList.ElementAt(pos).Price,
-                    Stock = Stock2Old + StockOld
-                };
-
-                if ((id - 1) == 0)
-                {
-                    Singleton.Instance.MedicineList.ExtractAtStart();
-                    Singleton.Instance.MedicineList.InsertAtStart(EditMedicineS);
-                }
-                else if (id - 1 == Singleton.Instance.MedicineList.Count())
-                {
-                    Singleton.Instance.MedicineList.ExtractAtEnd();
-                    Singleton.Instance.MedicineList.InsertAtEnd(EditMedicineS);
-                }
-                else
-                {
-                    Singleton.Instance.MedicineList.ExtractAtPosition(id - 1);
-                    Singleton.Instance.MedicineList.InsertAtPosition(EditMedicineS, id - 1);
-                }
-
-                if (StockOld == 0)
-                {
-                    var NewPD = new Models.Data.ClassMedicine
-                    {
-                        Position = Singleton.Instance.MedicineList.ElementAt(id).Id,
-                        Name = Singleton.Instance.MedicineList.ElementAt(id).Name
-                    };
-                    Singleton.Instance.IndexList.Insert(NewPD);
-                }
                 var EditProduct = Singleton.Instance.ProductsList.ElementAt(pos);
-                Singleton.Instance.ProductsList.Remove(EditProduct);
-                //BUSCAR ELEMENTO
-                SearchMedicine(NameEdit, StockNew);
+                return View(EditProduct);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+ 
+        }
+
+        // POST: PurchaseController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                int pos = 0;
+                bool Finding = false;
+                if(id != 0)
+                {
+                    while (Finding == false)
+                    {
+                        if (Convert.ToInt32(Singleton.Instance.ProductsList.ElementAt(pos).Id) == id)
+                        {
+                            Finding = true;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
+                    }
+
+                    int StockNew = Convert.ToInt32(collection["Stock"]);
+                    string NameEdit = Singleton.Instance.ProductsList.ElementAt(pos).Name;
+                    int StockOld = Singleton.Instance.ProductsList.ElementAt(pos).Stock;
+                    int Stock2Old = Singleton.Instance.MedicineList.ElementAt(id - 1).Stock;
+                    int TStock = StockOld + Stock2Old;
+
+                    if (StockNew <= TStock)
+                    {
+                        //NUEVA CANTIDAD EN LA LISTA MEDICINA
+                        var EditMedicineS = new Models.Medicine
+                        {
+                            Id = Singleton.Instance.ProductsList.ElementAt(pos).Id,
+                            Name = Singleton.Instance.ProductsList.ElementAt(pos).Name,
+                            Description = Singleton.Instance.ProductsList.ElementAt(pos).Description,
+                            ProductionHouse = Singleton.Instance.ProductsList.ElementAt(pos).ProductionHouse,
+                            Price = Singleton.Instance.ProductsList.ElementAt(pos).Price,
+                            Stock = TStock
+                        };
+
+
+                        if ((id - 1) == 0)
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtStart();
+                            Singleton.Instance.MedicineList.InsertAtStart(EditMedicineS);
+                        }
+                        else if (id - 1 == Singleton.Instance.MedicineList.Count())
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtEnd();
+                            Singleton.Instance.MedicineList.InsertAtEnd(EditMedicineS);
+                        }
+                        else
+                        {
+                            Singleton.Instance.MedicineList.ExtractAtPosition(id - 1);
+                            Singleton.Instance.MedicineList.InsertAtPosition(EditMedicineS, id - 1);
+                        }
+
+                        int TMStock = TStock - StockNew;
+                        if (StockOld == 0 && TMStock != 0)
+                        {
+                            var NewPD = new Models.Data.ClassMedicine
+                            {
+                                Position = Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
+                                Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name
+                            };
+                            Singleton.Instance.IndexList.Insert(NewPD);
+                        }
+                        var EditProduct = Singleton.Instance.ProductsList.ElementAt(pos);
+                        Singleton.Instance.ProductsList.Remove(EditProduct);
+
+                        //BUSCAR ELEMENTO
+                        SearchMedicine(NameEdit, StockNew);
+                    
+                    }
+                    else
+                    {
+                        //BUSCAR ELEMENTO
+                        SearchMedicine(NameEdit, StockNew);
+                    }
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -146,32 +171,10 @@ namespace Lab2_KASR_MAGZ.Controllers
         // GET: PurchaseController/Delete/5
         public ActionResult Delete(int id)
         {
-            int pos = 0;
-            bool Finding = false;
-            while (Finding == false)
+            if(id!=0)
             {
-                if (Convert.ToInt32(Singleton.Instance.ProductsList.ElementAt(pos).Id) == id)
-                {
-                    Finding = true;
-                }
-                else
-                {
-                    pos++;
-                }
-            }
-            var DeleteProduct = Singleton.Instance.ProductsList.ElementAt(pos);
-            return View(DeleteProduct);
-        }
-
-        // POST: PurchaseController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            int pos = 0;
-            bool Finding = false;
-            try
-            {
+                int pos = 0;
+                bool Finding = false;
                 while (Finding == false)
                 {
                     if (Convert.ToInt32(Singleton.Instance.ProductsList.ElementAt(pos).Id) == id)
@@ -184,49 +187,115 @@ namespace Lab2_KASR_MAGZ.Controllers
                     }
                 }
                 var DeleteProduct = Singleton.Instance.ProductsList.ElementAt(pos);
-
-                int NewCant = Singleton.Instance.ProductsList.ElementAt(pos).Stock;
-                //AGREAGR A LA LISTA ORIGINAL
-                var MedicineDelete = new Models.Medicine
-                {
-                    Id= Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
-                    Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name,
-                    Description = Singleton.Instance.MedicineList.ElementAt(id - 1).Description,
-                    ProductionHouse= Singleton.Instance.MedicineList.ElementAt(id - 1).ProductionHouse,
-                    Price= Singleton.Instance.MedicineList.ElementAt(id - 1).Price,
-                    Stock= Singleton.Instance.MedicineList.ElementAt(id - 1).Stock + NewCant
-                };
-
-                //AGREGAR AL ARBOL SI ES CERO
-                if (Convert.ToInt32(Singleton.Instance.MedicineList.ElementAt(id - 1).Stock) != 0)
-                {
-                    var NewPD = new Models.Data.ClassMedicine
-                    {
-                        Position = Singleton.Instance.MedicineList.ElementAt(id).Id,
-                        Name = Singleton.Instance.MedicineList.ElementAt(id).Name
-                    };
-                    Singleton.Instance.IndexList.Insert(NewPD);
-                }
-
-                if ((id - 1) == 0)
-                {
-                    Singleton.Instance.MedicineList.ExtractAtStart();
-                    Singleton.Instance.MedicineList.InsertAtStart(MedicineDelete);
-                }
-                else if (id - 1 == Singleton.Instance.MedicineList.Count())
-                {
-                    Singleton.Instance.MedicineList.ExtractAtEnd();
-                    Singleton.Instance.MedicineList.InsertAtEnd(MedicineDelete);
-                }
-                else
-                {
-                    Singleton.Instance.MedicineList.ExtractAtPosition(id - 1);
-                    Singleton.Instance.MedicineList.InsertAtPosition(MedicineDelete, id - 1);
-                }
-
-                //RETIRAR DE LA LISTA DE PRODUCTOS
-                Singleton.Instance.ProductsList.Remove(DeleteProduct);
+                return View(DeleteProduct);
+            }
+            else
+            {
                 return RedirectToAction(nameof(Index));
+            }
+            
+        }
+
+        // POST: PurchaseController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            int pos = 0;
+            bool Finding = false;
+            try
+            {
+                if (id != 0)
+                {
+                    while (Finding == false)
+                    {
+                        if (Convert.ToInt32(Singleton.Instance.ProductsList.ElementAt(pos).Id) == id)
+                        {
+                            Finding = true;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
+                    }
+
+                    var DeleteProduct = Singleton.Instance.ProductsList.ElementAt(pos);
+
+                    int NewCant = Singleton.Instance.ProductsList.ElementAt(pos).Stock;
+                    int OldCant = Singleton.Instance.MedicineList.ElementAt(id - 1).Stock;
+                    //AGREAGR A LA LISTA ORIGINAL
+                    var MedicineDelete = new Models.Medicine
+                    {
+                        Id = Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
+                        Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name,
+                        Description = Singleton.Instance.MedicineList.ElementAt(id - 1).Description,
+                        ProductionHouse = Singleton.Instance.MedicineList.ElementAt(id - 1).ProductionHouse,
+                        Price = Singleton.Instance.MedicineList.ElementAt(id - 1).Price,
+                        Stock = Singleton.Instance.MedicineList.ElementAt(id - 1).Stock + NewCant
+                    };
+
+                    //AGREGAR AL ARBOL SI ES CERO
+                    if (Convert.ToInt32(Singleton.Instance.MedicineList.ElementAt(id - 1).Stock) != 0)
+                    {
+                        var NewPD = new Models.Data.ClassMedicine
+                        {
+                            Position = Singleton.Instance.MedicineList.ElementAt(id).Id,
+                            Name = Singleton.Instance.MedicineList.ElementAt(id).Name
+                        };
+                        Singleton.Instance.IndexList.Insert(NewPD);
+                    }
+
+                    if ((id - 1) == 0)
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtStart();
+                        Singleton.Instance.MedicineList.InsertAtStart(MedicineDelete);
+                    }
+                    else if (id - 1 == Singleton.Instance.MedicineList.Count())
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtEnd();
+                        Singleton.Instance.MedicineList.InsertAtEnd(MedicineDelete);
+                    }
+                    else
+                    {
+                        Singleton.Instance.MedicineList.ExtractAtPosition(id - 1);
+                        Singleton.Instance.MedicineList.InsertAtPosition(MedicineDelete, id - 1);
+                    }
+
+                    //RETIRAR DE LA LISTA DE PRODUCTOS
+                    Singleton.Instance.ProductsList.Remove(DeleteProduct);
+
+                    //ACTUALIZAR EL TOTAL
+                    int contando = Singleton.Instance.ProductsList.Count();
+                    if (contando != 0)
+                    {
+                        Singleton.Instance.ProductsList.RemoveAt(contando - 1);
+                    }
+
+                    double TotalNumber = Calculations.NTotal(Singleton.Instance.ProductsList);
+                    var NewTotal = new Models.Medicine
+                    {
+                        Name = "TOTAL",
+                        Description = "-",
+                        ProductionHouse = "-",
+                        Id = 000,
+                        Stock = Calculations.ProductTotal(Singleton.Instance.ProductsList),
+                        Price = TotalNumber
+                    };
+
+                    Singleton.Instance.ProductsList.Add(NewTotal);
+                    if(OldCant == 0)
+                    {
+                        var NewPD = new Models.Data.ClassMedicine
+                        {
+                            Position = Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
+                            Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name
+                        };
+                        Singleton.Instance.IndexList.Insert(NewPD);
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+
             }
             catch
             {

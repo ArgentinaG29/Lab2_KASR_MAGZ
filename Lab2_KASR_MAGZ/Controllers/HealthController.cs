@@ -80,7 +80,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             }
                             else
                             {
-                                Concatenando += ", " + FileInformationList[pos];
+                                Concatenando += "," + FileInformationList[pos];
                             }
                             
                             string FileLength = FileInformationList[pos];
