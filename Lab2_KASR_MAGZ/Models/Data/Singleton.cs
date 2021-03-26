@@ -12,6 +12,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
         public GenericList<Medicine> MedicineList;
         public List<Customer> CustomerListInformation;
         public Tree<ClassMedicine> IndexList;
+        public Tree<ClassMedicine> IndexList2;
         public List<FileDownload> InformationFile;
         public List<Medicine> ProductsList;
         public List<Medicine> SearchingData;
@@ -21,6 +22,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
             MedicineList = new DoubleLinkedList<Medicine>();
             CustomerListInformation = new List<Customer>();
             IndexList = new BinaryTree<ClassMedicine>();
+            IndexList2 = new AVLTree<ClassMedicine>();
             InformationFile = new List<FileDownload>();
             ProductsList = new List<Medicine>();
             SearchingData = new List<Medicine>();

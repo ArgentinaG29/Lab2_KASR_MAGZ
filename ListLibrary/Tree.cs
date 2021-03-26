@@ -14,7 +14,11 @@ namespace ListLibrary
         }
 
         public virtual void Insert(T value) { }
+
+        public virtual void InsertAVL(T value) { }
         public virtual TreeNode<T> InsertSub(TreeNode<T> root, TreeNode<T> new_node) { return root; }
+
+        public virtual TreeNode<T> InsertSubAVL(TreeNode<T> root, TreeNode<T> new_node) { return root; }
 
         public virtual TreeNode<T> ReturnRoot() { return root; }
 

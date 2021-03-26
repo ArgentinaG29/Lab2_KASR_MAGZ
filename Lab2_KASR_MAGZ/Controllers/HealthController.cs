@@ -30,6 +30,7 @@ namespace Lab2_KASR_MAGZ.Controllers
             return View(Singleton.Instance.MedicineList);
         }
 
+
         [HttpPost]
         public IActionResult Index(IFormFile postedFile)
         {
@@ -223,7 +224,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             Singleton.Instance.MedicineList.InsertAtEnd(FileMedicine);
                         }
 
-                        Singleton.Instance.IndexList.Insert(FileIndex);
+                        Singleton.Instance.IndexList2.InsertAVL(FileIndex);
                         IdNumber++;
 
                     }
@@ -359,21 +360,21 @@ namespace Lab2_KASR_MAGZ.Controllers
         public ActionResult ListPre()
         {
             Singleton.Instance.InformationFile.Clear();
-            Singleton.Instance.IndexList.PreOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.PreOrder(Singleton.Instance.IndexList2.ReturnRoot());
             return View(Singleton.Instance.InformationFile);
         }
 
         public ActionResult ListIn()
         {
             Singleton.Instance.InformationFile.Clear();
-            Singleton.Instance.IndexList.InOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.InOrder(Singleton.Instance.IndexList2.ReturnRoot());
             return View(Singleton.Instance.InformationFile);
         }
 
         public ActionResult ListPost()
         {
             Singleton.Instance.InformationFile.Clear();
-            Singleton.Instance.IndexList.PostOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.PostOrder(Singleton.Instance.IndexList2.ReturnRoot());
             return View(Singleton.Instance.InformationFile);
         }
 
@@ -382,7 +383,7 @@ namespace Lab2_KASR_MAGZ.Controllers
             string text = "";
             Singleton.Instance.InformationFile.Clear();
 
-            Singleton.Instance.IndexList.PreOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.PreOrder(Singleton.Instance.IndexList2.ReturnRoot());
 
             for (int i = 0; i < Singleton.Instance.InformationFile.Count; i++)
             {
@@ -399,7 +400,7 @@ namespace Lab2_KASR_MAGZ.Controllers
             string text = "";
             Singleton.Instance.InformationFile.Clear();
 
-            Singleton.Instance.IndexList.InOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.InOrder(Singleton.Instance.IndexList2.ReturnRoot());
 
             for (int i =0; i<Singleton.Instance.InformationFile.Count; i++)
             {
@@ -417,7 +418,7 @@ namespace Lab2_KASR_MAGZ.Controllers
             string text = "";
             Singleton.Instance.InformationFile.Clear();
 
-            Singleton.Instance.IndexList.PostOrder(Singleton.Instance.IndexList.ReturnRoot());
+            Singleton.Instance.IndexList2.PostOrder(Singleton.Instance.IndexList2.ReturnRoot());
 
             for (int i = 0; i < Singleton.Instance.InformationFile.Count; i++)
             {

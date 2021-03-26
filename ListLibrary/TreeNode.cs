@@ -8,6 +8,7 @@ namespace ListLibrary
     {
         public TreeNode<T> right;
         public TreeNode<T> left;
+        public int height;
         
 
         public TreeNode()
@@ -15,6 +16,7 @@ namespace ListLibrary
             value = default(T);
             right = null;
             left = null;
+            height = 1;
         }
     }
 }

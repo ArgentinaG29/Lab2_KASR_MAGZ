@@ -342,7 +342,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                     };
 
                     TreeNode<ClassMedicine> new_node = new TreeNode<ClassMedicine>();
-                    new_node = Singleton.Instance.IndexList.Search(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+                    new_node = Singleton.Instance.IndexList2.Search(NewSearch, Singleton.Instance.IndexList2.ReturnRoot());
                     int Line = 0;
                     if (new_node != null)
                     {
@@ -418,7 +418,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             if (Unsold == 0)
                             {
                                 //ELIMINAR
-                                Singleton.Instance.IndexList.Delete(NewSearch, Singleton.Instance.IndexList.ReturnRoot());
+                                Singleton.Instance.IndexList2.Delete(NewSearch, Singleton.Instance.IndexList2.ReturnRoot());
                             }
 
 
