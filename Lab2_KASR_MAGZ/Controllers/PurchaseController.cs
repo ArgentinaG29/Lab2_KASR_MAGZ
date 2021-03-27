@@ -137,14 +137,14 @@ namespace Lab2_KASR_MAGZ.Controllers
                         }
 
                         int TMStock = TStock - StockNew;
-                        if (StockOld == 0 && TMStock != 0)
+                        if (Stock2Old == 0 && TMStock != 0)
                         {
                             var NewPD = new Models.Data.ClassMedicine
                             {
                                 Position = Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
                                 Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name
                             };
-                            Singleton.Instance.IndexList.Insert(NewPD);
+                            Singleton.Instance.IndexList2.InsertAVL(NewPD);
                         }
                         var EditProduct = Singleton.Instance.ProductsList.ElementAt(pos);
                         Singleton.Instance.ProductsList.Remove(EditProduct);
@@ -242,7 +242,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             Position = Singleton.Instance.MedicineList.ElementAt(id).Id,
                             Name = Singleton.Instance.MedicineList.ElementAt(id).Name
                         };
-                        Singleton.Instance.IndexList.Insert(NewPD);
+                        Singleton.Instance.IndexList2.InsertAVL(NewPD);
                     }
 
                     if ((id - 1) == 0)
@@ -290,7 +290,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             Position = Singleton.Instance.MedicineList.ElementAt(id - 1).Id,
                             Name = Singleton.Instance.MedicineList.ElementAt(id - 1).Name
                         };
-                        Singleton.Instance.IndexList.Insert(NewPD);
+                        Singleton.Instance.IndexList2.InsertAVL(NewPD);
                     }
                 }
 
@@ -304,30 +304,22 @@ namespace Lab2_KASR_MAGZ.Controllers
         }
 
         [HttpPost]
-        public ActionResult ClientInformation(string Name, int NIT, string Direct)
-        { 
-            if(Name != ""  && NIT != 0 && Direct != "")
+        public ActionResult ClientInformation(IFormCollection collection)
+        {
+
+            if (Singleton.Instance.CustomerListInformation.Count() == 0)
             {
-                if (Singleton.Instance.CustomerListInformation.Count() == 0)
+                var newClient = new Models.Customer
                 {
-                    var newClient = new Models.Customer
-                    {
-                        NameCustomer = Name,
-                        Nit = NIT,
-                        Direction = Direct
-                    };
-                    Singleton.Instance.CustomerListInformation.Add(newClient);
-                }
-                return RedirectToAction(nameof(Index));
+                    NameCustomer = collection["NameCustomer"],
+                    Nit = collection["Nit"],
+                    Direction = collection["Direction"]
+                };
+                Singleton.Instance.CustomerListInformation.Add(newClient);
             }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            
+            return RedirectToAction(nameof(Index));
+
         }
-
-
 
         [HttpPost]
         public ActionResult SearchMedicine(string NameMS, int quantity)
@@ -418,7 +410,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             if (Unsold == 0)
                             {
                                 //ELIMINAR
-                                Singleton.Instance.IndexList2.Delete(NewSearch, Singleton.Instance.IndexList2.ReturnRoot());
+                                Singleton.Instance.IndexList2.deleteNode(NewSearch);
                             }
 
 
@@ -462,7 +454,7 @@ namespace Lab2_KASR_MAGZ.Controllers
 
         public ActionResult DownloadBill()
         {
-            if(Singleton.Instance.ProductsList.Count != 0)
+            if(Singleton.Instance.ProductsList.Count != 0 && Singleton.Instance.CustomerListInformation.Count != 0)
             {
                 string text = "";
                 text += "Customer name: " + Singleton.Instance.CustomerListInformation.ElementAt(0).NameCustomer + "\n" + "NIT: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Nit + "\n" + "Address: " + Singleton.Instance.CustomerListInformation.ElementAt(0).Direction + "\n";

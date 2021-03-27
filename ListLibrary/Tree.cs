@@ -28,6 +28,7 @@ namespace ListLibrary
 
         public virtual void PostOrder(TreeNode<T> root) { }
         public virtual TreeNode<T> Search(T searched, TreeNode<T> root) { return root; }
+        public void deleteNode(T value) { root = Delete(value, root); }
         public virtual TreeNode<T> Delete(T value, TreeNode<T> root) { return root; }
         public virtual TreeNode<T> GetMinor(TreeNode<T> root) { return root; }
         

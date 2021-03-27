@@ -12,7 +12,7 @@ namespace Lab2_KASR_MAGZ.Models
         public string NameCustomer { get; set; }
 
         [Required]
-        public int Nit { get; set; }
+        public string Nit { get; set; }
 
         [Required]
         public string Direction { get; set; }

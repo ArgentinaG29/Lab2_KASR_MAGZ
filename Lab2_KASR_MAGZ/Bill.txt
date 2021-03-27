@@ -1,5 +1,9 @@
-Customer name: Matt
-NIT: 51256598
-Address: London
-Venlafaxine, Other superficial bite of unspecified back wall of thorax, Clinical Solutions Wholesale, 858.27, 2, 
-TOTAL, -, -, 1716.54, 2, 
+Customer name: Sunoo
+NIT: 156487
+Address: Corea
+ESIKA, Adverse effect of unsp drug/meds/biol subst,  subs, Ventura Corporation (San Juan,  P.R), 546.45, 2, 
+Noble Lion Medicated Balm, Nondisplaced Zone I fracture of sacrum,  sequela, ABBP (ARRINGTON,  BATTLE,  BELL & PERRY),  LLC, 633.19, 2, 
+Vicodin, Ped w convey injured in collision w pedl cyc nontraf,  init, AbbVie Inc., 925.01, 1, 
+Aluminum Hydroxide, Poisoning by oth nonsteroid anti-inflam drugs,  undetermined, LLC Federal Solutions, 975.04, 4, 
+Lansoprazole, Follicular lymphoma grade IIIa,  unspecified site, Wockhardt Limited, 969.99, 5, 
+TOTAL, -, -, 12034.4, 14, 

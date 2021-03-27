@@ -170,37 +170,7 @@ namespace Lab2_KASR_MAGZ.Models.Data
                     break;
                 case (" "):
                     number = 27;
-                    break;
-                case ("0"):
-                    number = 28;
-                    break;
-                case ("1"):
-                    number = 29;
-                    break;
-                case ("2"):
-                    number = 30;
-                    break;
-                case ("3"):
-                    number = 31;
-                    break;
-                case ("4"):
-                    number = 32;
-                    break;
-                case ("5"):
-                    number = 33;
-                    break;
-                case ("6"):
-                    number = 34;
-                    break;
-                case ("7"):
-                    number = 35;
-                    break;
-                case ("8"):
-                    number = 36;
-                    break;
-                case ("9"):
-                    number = 37;
-                    break;
+                    break;                
                 default:
                     break;
             }

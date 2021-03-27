@@ -69,12 +69,18 @@ namespace Lab2_KASR_MAGZ.Controllers
 
                     bool Repeat = true;
                     bool Primero = true;
-                    string Concatenando="";
+                    string Concatenando = "";
+                    bool EspecialCaso = false;
                     if (FileInformationList[pos].Substring(0, 1) == "\"")
                     {
+                        if (FileInformationList[pos].Substring(0, 2) == "\"\"")
+                        {
+                            EspecialCaso = true;
+                        }
+
                         while (Repeat == true)
                         {
-                            if(Primero == true)
+                            if (Primero == true)
                             {
                                 Concatenando += FileInformationList[pos];
                                 Primero = false;
@@ -83,13 +89,24 @@ namespace Lab2_KASR_MAGZ.Controllers
                             {
                                 Concatenando += "," + FileInformationList[pos];
                             }
-                            
+
                             string FileLength = FileInformationList[pos];
                             if (FileInformationList[pos].Substring(FileLength.Length - 1, 1) == "\"")
                             {
-                                Repeat = false;
-                                Concatenando = Concatenando.Remove(0, 2);
-                                Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                if (EspecialCaso == true)
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 2);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                }
+                                else
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 1);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 1, 1);
+                                }
+
+
                             }
                             pos++;
                         }
@@ -102,10 +119,16 @@ namespace Lab2_KASR_MAGZ.Controllers
                     FileName = Concatenando;
 
                     Repeat = true;
+                    EspecialCaso = false;
                     Primero = true;
                     Concatenando = "";
                     if (FileInformationList[pos].Substring(0, 1) == "\"")
                     {
+                        if (FileInformationList[pos].Substring(0, 2) == "\"\"")
+                        {
+                            EspecialCaso = true;
+                        }
+
                         while (Repeat == true)
                         {
                             if (Primero == true)
@@ -121,9 +144,19 @@ namespace Lab2_KASR_MAGZ.Controllers
                             string FileLength = FileInformationList[pos];
                             if (FileInformationList[pos].Substring(FileLength.Length - 1, 1) == "\"")
                             {
-                                Repeat = false;
-                                Concatenando = Concatenando.Remove(0, 2);
-                                Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                if (EspecialCaso == true)
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 2);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                }
+                                else
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 1);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 1, 1);
+                                }
+
                             }
                             pos++;
                         }
@@ -137,10 +170,16 @@ namespace Lab2_KASR_MAGZ.Controllers
                     FileDescription = Concatenando;
 
                     Repeat = true;
+                    EspecialCaso = false;
                     Primero = true;
                     Concatenando = "";
                     if (FileInformationList[pos].Substring(0, 1) == "\"")
                     {
+                        if (FileInformationList[pos].Substring(0, 2) == "\"\"")
+                        {
+                            EspecialCaso = true;
+                        }
+
                         while (Repeat == true)
                         {
                             if (Primero == true)
@@ -155,9 +194,18 @@ namespace Lab2_KASR_MAGZ.Controllers
                             string FileLength = FileInformationList[pos];
                             if (FileInformationList[pos].Substring(FileLength.Length - 1, 1) == "\"")
                             {
-                                Repeat = false;
-                                Concatenando = Concatenando.Remove(0, 2);
-                                Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                if (EspecialCaso == true)
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 2);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 2, 2);
+                                }
+                                else
+                                {
+                                    Repeat = false;
+                                    Concatenando = Concatenando.Remove(0, 1);
+                                    Concatenando = Concatenando.Remove(Concatenando.Length - 1, 1);
+                                }
                             }
                             pos++;
                         }
@@ -184,10 +232,10 @@ namespace Lab2_KASR_MAGZ.Controllers
                     {
                         removeSome = FileInformationList[pos];
                     }
-                    
+
                     int FileStock = Convert.ToInt32(removeSome);
 
-                    for(int i=0; i< Singleton.Instance.MedicineList.Count(); i++)
+                    for (int i = 0; i < Singleton.Instance.MedicineList.Count(); i++)
                     {
                         string CompNameA = FileName.ToUpper();
                         string CompNameB = Convert.ToString(Singleton.Instance.MedicineList.ElementAt(i).Name).ToUpper();
@@ -197,7 +245,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                         }
                     }
 
-                    if(Same == false)
+                    if (Same == false)
                     {
                         var FileMedicine = new Models.Medicine
                         {
@@ -349,7 +397,7 @@ namespace Lab2_KASR_MAGZ.Controllers
                             Singleton.Instance.MedicineList.InsertAtPosition(NewMedicineStock, i);
                         }
 
-                        Singleton.Instance.IndexList.Insert(NewIndexStock);
+                        Singleton.Instance.IndexList2.InsertAVL(NewIndexStock);
 
                     }
                 }

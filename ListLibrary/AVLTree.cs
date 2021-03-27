@@ -92,36 +92,108 @@ namespace ListLibrary
         {
             if (root == null)
             {
-                root = new_node;
+                return new_node;
             }
-            else if (new_node.value.CompareTo(root.value) == 1)
+            else
             {
-                root.right = InsertSubAVL(root.right, new_node);
+                int comparison = new_node.value.CompareTo(root.value);
+
+                if (comparison != 0)//Si no son iguales hacer inserción
+                {
+                    if (comparison == 1)
+                    {
+                        root.right = InsertSubAVL(root.right, new_node);
+
+                    }
+                    else if (comparison == -1)
+                    {
+                        root.left = InsertSubAVL(root.left, new_node);
+                    }
+
+
+                    //Actualizar altura
+                    root.height = 1 + Max(Height(root.left), Height(root.right));
+                    //Obtener factor de balance
+                    int balance = GetBalance(root);
+                    //Verificar tipo de rotación
+                    if (balance > 1 && new_node.value.CompareTo(root.left.value) == -1)
+                    {
+                        root = RightRotate(root);
+                    }
+                    else if (balance < -1 && new_node.value.CompareTo(root.right.value) == 1)
+                    {
+                        root = leftRotate(root);
+                    }
+                    else if (balance > 1 && new_node.value.CompareTo(root.left.value) == 1)
+                    {
+                        root.left = leftRotate(root.left);
+                        root = RightRotate(root);
+                    }
+                    else if (balance < -1 && new_node.value.CompareTo(root.right.value) == -1)
+                    {
+                        root.right = RightRotate(root.right);
+                        root = leftRotate(root);
+                    }
+                }
             }
-            else if(new_node.value.CompareTo(root.value) == -1)
+            return root;
+        }
+
+        public override TreeNode<T> Delete(T value, TreeNode<T> root)
+        {
+            if (root == null)
             {
-                root.left = InsertSubAVL(root.left, new_node);
+                return root;
+            }
+            else
+            {
+                int comparison = value.CompareTo(root.value);
+
+                if (comparison == -1)
+                {
+                    root.left = Delete(value, root.left);
+                }
+                else
+                {
+                    if (comparison == 1)
+                    {
+                        root.right = Delete(value, root.right);
+                    }
+                    else
+                    {
+                        //Ya tengo el nodo a eliminar
+                        if (root.left == null)
+                        {
+                            return root.right;
+                        }
+                        else if (root.right == null)
+                        {
+                            return root.left;
+                        }
+                        //Tiene dos hijos
+                        root.value = GetMinor(root.right).value;
+                        root.right = Delete(root.value, root.right);
+                    }
+                }
             }
 
-            //Actualizar altura
-            root.height = 1 + Max(Height(root.left), Height(root.right));
-
+            root.height = Max(Height(root.left), Height(root.right)) + 1;
             int balance = GetBalance(root);
 
-            if(balance > 1 && new_node.value.CompareTo(root.left.value)==-1)
+            if (balance > 1 && GetBalance(root.left) >= 0)
             {
                 root = RightRotate(root);
             }
-            else if(balance < -1 && new_node.value.CompareTo(root.right.value) == 1)
+            else if (balance < -1 && GetBalance(root.right) <= 0)
             {
                 root = leftRotate(root);
             }
-            else if(balance > 1 && new_node.value.CompareTo(root.left.value) == 1)
+            else if (balance > 1 && GetBalance(root.left) < 0)
             {
                 root.left = leftRotate(root.left);
                 root = RightRotate(root);
             }
-            else if(balance < -1 && new_node.value.CompareTo(root.right.value) == -1)
+            else if (balance < -1 && GetBalance(root.right) > 0)
             {
                 root.right = RightRotate(root.right);
                 root = leftRotate(root);
